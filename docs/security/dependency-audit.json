@@ -1,0 +1,25 @@
+{
+  "assessedOn": "2026-10-29",
+  "command": "npm.cmd audit --json",
+  "registryCounts": { "critical": 0, "high": 7, "moderate": 0, "low": 0, "total": 7 },
+  "uniqueAdvisories": [
+    {
+      "id": "GHSA-mrhx-c7xc-m3w5",
+      "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+      "package": "zod",
+      "installedVersion": "3.25.76",
+      "affectedRangeReportedByRegistry": "<4.6.6",
+      "patchedVersionReportedByRegistry": "4.6.6",
+      "severity": "high",
+      "status": "OPEN: a compatible Hardhat/toolbox upgrade is required",
+      "affectedPackageEntries": [
+        "zod", "hardhat", "@nomicfoundation/hardhat-ethers",
+        "@nomicfoundation/hardhat-keystore", "@nomicfoundation/hardhat-mocha",
+        "@nomicfoundation/hardhat-typechain", "@nomicfoundation/hardhat-verify"
+      ],
+      "analysis": "The installed Hardhat 3 tooling imports Zod 3 APIs. The catalogue API does not import Hardhat or Zod. Reachability of the advisory through the local RPC was not proven. Do not expose the development RPC, force Zod 4 over incompatible dependencies, or treat the audit as cleared."
+    }
+  ],
+  "rawEvidence": "cache/security/npm-audit-before.json",
+  "note": "The raw registry response is local generated evidence ignored by Git. This summary is tracked. Re-run the command when dependencies change."
+}

@@ -1,0 +1,40 @@
+{
+  "name": "BlockRent",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "node:local": "hardhat node --hostname 127.0.0.1",
+    "test:security": "node --test frontend/test/server-security.test.mjs frontend/test/catalogue-store.test.mjs",
+    "dev": "vite frontend --config frontend/vite.config.js",
+    "build:frontend": "vite build frontend --config frontend/vite.config.js",
+    "preview": "vite preview frontend --config frontend/vite.config.js",
+    "setup:demo": "hardhat run scripts/setup-demo.ts --network localhost",
+    "test:frontend": "node --test frontend/test/*.test.mjs",
+    "test:browser": "hardhat run scripts/test-frontend-browser.js"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^4.2.1",
+    "@nomicfoundation/hardhat-ethers-chai-matchers": "^3.0.13",
+    "@nomicfoundation/hardhat-ignition": "^3.1.9",
+    "@nomicfoundation/hardhat-ignition-ethers": "^3.1.6",
+    "@nomicfoundation/hardhat-keystore": "^3.1.2",
+    "@nomicfoundation/hardhat-mocha": "^4.0.1",
+    "@nomicfoundation/hardhat-network-helpers": "^3.0.12",
+    "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^4.0.0",
+    "@nomicfoundation/hardhat-typechain": "^3.1.3",
+    "@nomicfoundation/hardhat-verify": "^3.1.4",
+    "@nomicfoundation/ignition-core": "^3.1.11",
+    "@types/chai": "^5.2.3",
+    "@types/chai-as-promised": "^8.0.2",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.20.5",
+    "chai": "^6.3.0",
+    "ethers": "^6.17.0",
+    "forge-std": "github:foundry-rs/forge-std#v1.16.2",
+    "hardhat": "^3.21.1",
+    "mocha": "^12.0.3",
+    "playwright-core": "^1.64.1",
+    "typescript": "~6.0.3",
+    "vite": "^8.3.5"
+  }
+}

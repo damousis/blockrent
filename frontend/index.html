@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#153b36" />
+    <meta name="description" content="Browse and rent everyday assets with your Ethereum wallet. BlockRent local demo." />
+    <title>BlockRent — A little less owning. A little more doing.</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="BlockRent home"><span class="brand-mark">b.</span>blockrent<span class="brand-period">®</span></a>
+      <nav aria-label="Main navigation"><a href="#catalogue">Explore assets</a><a href="#earnings">Your earnings</a></nav>
+      <button id="connect" class="button button-dark" aria-haspopup="dialog" aria-controls="wallet-picker">Connect MetaMask <span aria-hidden="true">↗</span></button>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy"><p class="eyebrow"><span class="dot"></span> LESS STUFF. MORE POSSIBILITY.</p>
+          <h1 id="hero-title">Good things.<br />Yours for <em>a while.</em></h1>
+          <p class="hero-description">A ride across town. A weekend away. Your next big project.<br class="desktop-break" /> Rent what you need, for the days you need it.</p>
+          <a class="button button-dark hero-link" href="#catalogue">Find your next thing <span aria-hidden="true">↗</span></a>
+          <div class="hero-footnote"><span aria-hidden="true">◇</span> Wallet to wallet. Clear prices. On your terms.</div>
+        </div>
+        <div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><span class="art-number">01 — 03</span><img src="/images/bicycle.svg" alt="" /><div class="floating-note"><span class="dot"></span> OWN THE MOMENT.<br /><strong>Borrow the rest.</strong></div><span class="art-star">✳</span></div>
+      </section>
+
+      <section class="connection-strip" aria-label="Blockchain connection">
+        <div><span id="chain-dot" class="dot dot-muted"></span><strong id="chain-status">Connecting to local demo…</strong><span class="network-name">Hardhat Local · Test ETH</span></div>
+        <button id="switch-network" class="text-button" hidden>Switch wallet network ↗</button>
+        <button id="refresh" class="text-button">Refresh ↻</button>
+      </section>
+      <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+
+      <section id="catalogue" class="catalogue" aria-labelledby="catalogue-title">
+        <div class="section-heading"><div><p class="eyebrow">THE EVERYDAY COLLECTION</p><h2 id="catalogue-title">Make room for possibilities.</h2></div><span class="collection-count">Useful things. Endless plans.</span></div>
+        <div class="catalogue-toolbar"><div class="filters" role="group" aria-label="Filter asset category"><button class="filter active" data-category="All" aria-pressed="true">All assets <span id="asset-count">3</span></button><button class="filter" data-category="Bike" aria-pressed="false">Bikes</button><button class="filter" data-category="Car" aria-pressed="false">Cars</button><button class="filter" data-category="Tool" aria-pressed="false">Tools</button><button class="filter" data-category="Other" aria-pressed="false">Other</button></div><button id="register-asset" class="button button-dark" disabled>Register an asset +</button></div>
+        <p id="catalogue-warning" class="catalogue-message" role="status" hidden></p>
+        <div id="asset-grid" class="asset-grid" aria-busy="true"></div>
+        <div id="catalogue-pagination" class="catalogue-pagination" hidden><button id="catalogue-previous" class="text-button">← Previous</button><span id="catalogue-page"></span><button id="catalogue-next" class="text-button">Next →</button></div>
+        <p id="empty-catalogue" class="catalogue-message" hidden>No assets in this collection yet. Register something to share.</p>
+      </section>
+
+      <section id="earnings" class="earnings" aria-labelledby="earnings-title"><div><p class="eyebrow">FOR THE THINGS YOU SHARE</p><h2 id="earnings-title">Your assets. Your earnings.</h2><p>Rental payments stay in the contract until you collect them.<br />Your wallet receives your earnings when you withdraw.</p></div><div class="earnings-action"><span class="earnings-label">AVAILABLE TO WITHDRAW</span><strong><span id="balance">—</span> <span class="eth-unit">ETH</span></strong><button id="withdraw" class="button button-light" disabled>Withdraw earnings <span aria-hidden="true">↗</span></button><small id="earnings-hint">Connect your wallet to see your earnings.</small></div></section>
+
+      <section class="how-it-works" aria-label="How it works"><div><span>01 /</span><h3>Find your thing.</h3><p>Browse a few useful things for whatever comes next.</p></div><div><span>02 /</span><h3>Pick your days.</h3><p>Choose 1–30 days. The full rental price is shown upfront.</p></div><div><span>03 /</span><h3>Make it yours, briefly.</h3><p>Confirm in MetaMask. Rental rights follow your wallet.</p></div></section>
+    </main>
+
+    <footer><a class="brand" href="/">blockrent<span class="brand-period">®</span></a><p>A little less owning. A little more doing.</p><span>Local demo · Simulated ETH · Gas applies</span></footer>
+    <template id="asset-template"><article class="asset-card"><div class="asset-image"><img class="asset-photo" alt="" /><span class="availability">Loading…</span><span class="asset-id"></span></div><div class="asset-body"><p class="asset-category"></p><h3 class="asset-name"></h3><p class="asset-description"></p><div class="attributes"></div><div class="asset-price"><strong class="daily-price">—</strong><span> ETH / day</span></div><dl class="asset-details"><div><dt>Owner</dt><dd class="owner-address">—</dd></div><div><dt>Rental access</dt><dd class="possessor-address">—</dd></div><div class="expiry-row" hidden><dt>Rental ends</dt><dd class="rental-expiry">—</dd></div></dl><div class="rent-controls"><label>Days <input class="duration" type="number" min="1" max="30" step="1" value="3" inputmode="numeric" /></label><div class="total"><span>Total rental</span><strong class="total-price">—</strong><small>+ wallet transaction gas</small></div></div><button class="button button-rent" disabled>Connect wallet to rent <span aria-hidden="true">↗</span></button><p class="card-hint"></p><button class="finish-details text-button" hidden>Finish listing details</button><button class="button-remove text-button" hidden>Remove asset</button></div></article></template>
+    <dialog id="listing-dialog" class="wallet-picker listing-dialog" aria-labelledby="listing-title">
+      <form id="listing-form">
+        <div class="wallet-picker-heading"><h2 id="listing-title">Share a new asset</h2><button id="close-listing" class="wallet-close" type="button" aria-label="Close registration">×</button></div>
+        <p class="catalogue-message">Registering as <strong id="listing-owner"></strong>. Confirmation in MetaMask is required.</p>
+        <p id="listing-id-note" class="catalogue-message">Your asset ID is assigned automatically after confirmation.</p>
+        <label>Asset name<input name="name" required maxlength="80" placeholder="e.g. Camping Tent" /></label>
+        <label>Category<select name="category"><option>Bike</option><option>Car</option><option>Tool</option><option>Other</option></select></label>
+        <label>Description<textarea name="description" maxlength="400" rows="3" placeholder="Tell renters a little about your asset"></textarea></label>
+        <label>Price per day (ETH)<input name="price" required inputmode="decimal" placeholder="e.g. 0.01" /></label>
+        <p class="catalogue-message">A category illustration is included. The contract assigns a unique ID that is never reused.</p>
+        <button id="submit-listing" class="button button-dark" type="submit">Register asset</button>
+        <p id="listing-status" class="wallet-picker-status" role="status" aria-live="polite"></p>
+      </form>
+    </dialog>
+    <dialog id="remove-dialog" class="wallet-picker" aria-labelledby="remove-title">
+      <div class="wallet-picker-heading"><h2 id="remove-title">Remove asset?</h2><button id="close-remove" class="wallet-close" type="button" aria-label="Cancel removal">×</button></div>
+      <p id="remove-description"></p>
+      <p>Your earned balance stays withdrawable. This asset ID cannot be used again.</p>
+      <button id="confirm-remove" class="button button-dark" type="button">Confirm removal in MetaMask</button>
+      <p id="remove-status" class="wallet-picker-status" role="status" aria-live="polite"></p>
+    </dialog>
+    <dialog id="wallet-picker" class="wallet-picker" aria-labelledby="wallet-picker-title" aria-describedby="wallet-picker-description">
+      <div class="wallet-picker-heading"><h2 id="wallet-picker-title">Choose your wallet</h2><button id="close-wallet-picker" class="wallet-close" type="button" aria-label="Close wallet picker">×</button></div>
+      <p id="wallet-picker-description">Select an account shared with BlockRent. Rentals and withdrawals use the wallet you choose.</p>
+      <div id="wallet-accounts" class="wallet-accounts" aria-label="Available wallet accounts"></div>
+      <p class="wallet-picker-help">Don't see Alice or Bob? Share their imported accounts with this site in MetaMask.</p>
+      <button id="manage-wallet-accounts" class="button button-dark" type="button">Choose accounts in MetaMask ↗</button>
+      <p id="wallet-picker-status" class="wallet-picker-status" role="status" aria-live="polite"></p>
+    </dialog>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

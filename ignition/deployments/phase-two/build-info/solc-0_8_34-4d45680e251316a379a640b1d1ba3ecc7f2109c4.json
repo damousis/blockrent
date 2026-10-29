@@ -1,0 +1,49 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_34-4d45680e251316a379a640b1d1ba3ecc7f2109c4",
+  "solcVersion": "0.8.34",
+  "solcLongVersion": "0.8.34+commit.80d5c536",
+  "compilerType": "solc",
+  "toolVersions": {
+    "hardhat": "3.21.1"
+  },
+  "userSourceNameMap": {
+    "contracts/RentalPlatform.sol": "project/contracts/RentalPlatform.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "osaka",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode.linkReferences",
+            "evm.bytecode.object",
+            "evm.bytecode.opcodes",
+            "evm.bytecode.sourceMap",
+            "evm.deployedBytecode.immutableReferences",
+            "evm.deployedBytecode.linkReferences",
+            "evm.deployedBytecode.object",
+            "evm.deployedBytecode.opcodes",
+            "evm.deployedBytecode.sourceMap",
+            "evm.methodIdentifiers"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/RentalPlatform.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.34;\n\n/// @notice Registry of assets, paid rentals, and temporary access rights.\ncontract RentalPlatform {\n    struct Asset {\n        address owner;\n        address renter;\n        uint256 rentedUntil;\n        uint256 pricePerDay;\n    }\n\n    uint256 public constant MAX_RENTAL_DAYS = 30;\n\n    mapping(uint256 => Asset) public assets;\n    // ETH earned by each owner, held here until they withdraw it.\n    mapping(address => uint256) public balances;\n\n    event AssetRegistered(uint256 indexed assetId, address indexed owner, uint256 pricePerDay);\n    event AssetRented(uint256 indexed assetId, address indexed renter, uint256 rentedUntil);\n    event Withdrawal(address indexed owner, uint256 amount);\n\n    function registerAsset(uint256 assetId, uint256 pricePerDay) external {\n        require(assets[assetId].owner == address(0), \"Asset already registered\");\n\n        assets[assetId] = Asset({\n            owner: msg.sender,\n            renter: address(0),\n            rentedUntil: 0,\n            pricePerDay: pricePerDay\n        });\n\n        emit AssetRegistered(assetId, msg.sender, pricePerDay);\n    }\n\n    function rentAsset(uint256 assetId, uint256 durationDays) external payable {\n        Asset storage asset = assets[assetId];\n        require(asset.owner != address(0), \"Asset does not exist\");\n        require(msg.sender != asset.owner, \"Owner cannot rent own asset\");\n        require(block.timestamp >= asset.rentedUntil, \"Asset already rented\");\n        require(durationDays >= 1 && durationDays <= MAX_RENTAL_DAYS, \"Duration must be 1-30 days\");\n\n        uint256 totalPrice = asset.pricePerDay * durationDays;\n        require(msg.value == totalPrice, \"Incorrect payment\");\n\n        asset.renter = msg.sender;\n        asset.rentedUntil = block.timestamp + durationDays * 1 days;\n        balances[asset.owner] += msg.value;\n\n        emit AssetRented(assetId, msg.sender, asset.rentedUntil);\n    }\n\n    function withdraw() external {\n        uint256 amount = balances[msg.sender];\n        require(amount > 0, \"No balance to withdraw\");\n\n        // Clear the credit before calling the recipient so it cannot be spent twice.\n        balances[msg.sender] = 0;\n        (bool success, ) = payable(msg.sender).call{value: amount}(\"\");\n        require(success, \"Withdrawal failed\");\n\n        emit Withdrawal(msg.sender, amount);\n    }\n\n    function currentPossessor(uint256 assetId) public view returns (address) {\n        Asset storage asset = assets[assetId];\n        require(asset.owner != address(0), \"Asset does not exist\");\n\n        return block.timestamp < asset.rentedUntil ? asset.renter : asset.owner;\n    }\n\n    /// @dev This checks permission only; callers must separately prove wallet control.\n    function canUnlock(uint256 assetId, address wallet) external view returns (bool) {\n        return currentPossessor(assetId) == wallet;\n    }\n}\n"
+      }
+    }
+  }
+}
